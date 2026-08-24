@@ -1,0 +1,85 @@
+# STM32Cube / CMake Project .gitignore
+
+# Build directories
+[Bb]uild/
+cmake-build-*/
+out/
+
+# CMake in-source build artifacts
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+install_manifest.txt
+Makefile
+CTestTestfile.cmake
+
+# Compiled objects and libraries
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+
+# Executables and binary images
+*.elf
+*.bin
+*.hex
+*.map
+*.lst
+*.srec
+
+# Dependency files
+*.d
+
+# IDE files - CLion / IntelliJ
+.idea/
+
+# IDE files - VS Code
+.vscode/
+.history/
+
+# IDE files - STM32CubeIDE / Eclipse / TrueSTUDIO
+.settings/
+.project
+.cproject
+.metadata/
+RemoteSystemsTempFiles/
+*.launch
+
+# IDE files - Keil MDK
+*.uvopt
+*.uvoptx
+*.uvproj
+*.uvprojx
+*.uvgui.*
+*.uvguix.*
+Listings/
+Objects/
+
+# IDE files - IAR Embedded Workbench
+*.dep
+*.ewp
+*.eww
+*.ewd
+*.jlink
+*.custom_argvars
+*.dnx
+*.dbgdt
+*.wsdt
+Settings/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Project specific
+# As per README, tc-libs is user-managed (cloned or symlinked)
+tc-libs/
