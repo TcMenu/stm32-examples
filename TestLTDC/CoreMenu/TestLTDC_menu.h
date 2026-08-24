@@ -16,8 +16,10 @@
 
 
 #include <tcMenuBuilder.h>
-#include <tcUnicodeHelper.h>
 #include "FrameBufferDrawable.h"
+#include "stmCubeTouchBsp.h"
+#include <extras/DrawableTouchCalibrator.h>
+#include <tcUnicodeHelper.h>
 #include <IoAbstraction.h>
 #include <EepromItemStorage.h>
 #include <mbed/HalStm32EepromAbstraction.h>
@@ -27,6 +29,12 @@ extern const PROGMEM ConnectorLocalInfo applicationInfo;
 extern StmDMA2dAdafruitFrameBuffer16 gfx;
 extern TcAdafruitFrameDrawable gfxDrawable;
 extern GraphicsDeviceRenderer renderer;
+extern StBspTouchInterrogator touchInterrogator;
+extern iotouch::TouchOrientationSettings touchSettings;
+extern MenuTouchScreenManager touchScreenManager;
+extern tcextras::IoaTouchScreenCalibrator touchCal;
+extern const UnicodeFont RobotoRegular16pt[];
+extern const UnicodeFont RobotoMedium24[];
 
 // Any externals needed by IO expanders, EEPROMs etc
 

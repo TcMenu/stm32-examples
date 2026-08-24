@@ -54,11 +54,15 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
+        ${CMAKE_CURRENT_SOURCE_DIR}/Middlewares/ST/ST_TouchCode/stm32f429i_discovery.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/Middlewares/ST/ST_TouchCode/stm32f429i_discovery_ts.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/Middlewares/ST/ST_TouchCode/stm32f429i_discovery_io.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/Middlewares/ST/ST_TouchCode/stmpe811.c
         ${CMAKE_CURRENT_SOURCE_DIR}/CoreMenu/frameBufferSetup.c
         ${CMAKE_CURRENT_SOURCE_DIR}/CoreMenu/appMain.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/CoreMenu/FrameBufferDrawable.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/CoreMenu/TestLTDC_menu.cpp
-
+        ${CMAKE_CURRENT_SOURCE_DIR}/CoreMenu/stmCubeTouchBsp.cpp
 )
 
 # Add include paths

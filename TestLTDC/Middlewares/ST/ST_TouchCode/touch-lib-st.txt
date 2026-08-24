@@ -1,0 +1,13 @@
+This code is taken from the official ST discovery Library. I've modified it
+to work with the STM32F4Discovery board. It exposes a few functions for mapping
+the touchscreen to the STM32F4Discovery board.
+
+https://github.com/STMicroelectronics/x-cube-azrtos-f4/tree/befedcdd72388c9c9305eccf5208a19845c31b47/Drivers/BSP/Components/Common
+
+and
+
+https://github.com/STMicroelectronics/32f429idiscovery-bsp/tree/main
+
+I'm not even going to say this is the right way to do things, but for the sake of example it works fairly
+well, and if you're trying to use the same touchscreen in your project then this may be a good starting
+ point.

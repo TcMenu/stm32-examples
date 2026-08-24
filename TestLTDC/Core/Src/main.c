@@ -715,53 +715,11 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
     HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
 
-    uint16_t* pLayerData = (uint16_t*)0xD0000000;
-    for (int i=0;i<240*320;i++) {
-        pLayerData[i] = rand() % 0xffff;
-    }
-
     LCD_ILI9341_Init(&hspi5);
     FrameBuffer_EnableLTDC(&hltdc);
 
-    appMain();
+    appMain(); // <-- calls the menu code.
   /* USER CODE END 5 */
-}
-
-uint32_t millis(void) {
-    return HAL_GetTick();
-}
-
-uint32_t micros(void) {
-    return __HAL_TIM_GET_COUNTER(&htim2);
-}
-
-void yield(void) {
-    osDelay(0);
-}
-
-UART_HandleTypeDef* loggingUart = &huart1;
-
-
-/**
-  * @brief  Period elapsed callback in non blocking mode
-  * @note   This function is called  when TIM6 interrupt took place, inside
-  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
-  * a global variable "uwTick" used as application time base.
-  * @param  htim : TIM handle
-  * @retval None
-  */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-  /* USER CODE BEGIN Callback 0 */
-
-  /* USER CODE END Callback 0 */
-  if (htim->Instance == TIM6)
-  {
-    HAL_IncTick();
-  }
-  /* USER CODE BEGIN Callback 1 */
-
-  /* USER CODE END Callback 1 */
 }
 
 /**
