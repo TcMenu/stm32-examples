@@ -1,4 +1,4 @@
-# STM32 Cube examples and starter projects
+# Examples using STM32Cube to build embedded menu UI using tcMenu framework
 
 In this repository we host a few STM32 starter examples for tcMenu. If you're on the same board (or very similar) as us, you've got an absolute starter that can be used immediately. Otherwise, a quick trip through STM32CubeMX should result in a working project.
 
