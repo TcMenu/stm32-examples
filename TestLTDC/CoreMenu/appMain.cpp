@@ -1,16 +1,45 @@
+/**
+ * An example TcMenu application built with StmCube and web designer in initializer mode. You can read mode about web
+ * designer and try it out yourself: https://designer.thecoderscorner.com/
+ *
+ * This application is designed to operate on the STM32F429-DISC1 board, it uses the touch screen controller and the
+ * LTDC frame buffer based display controller too.
+ */
+
 #include "appMain.h"
 #include "main.h"
 #include <TaskManagerIO.h>
 #include <IoLogging.h>
 #include "FrameBufferDrawable.h"
-#include <Fonts/RobotoMedium18.h>
 #include "TestLTDC_menu.h"
+#include "graphics/TcThemeBuilder.h"
+#include "bitmapSources.h"
+#include <stockIcons/wifiAndConnectionIcons16x12.h>
 
-StmDMA2dAdafruitFrameBuffer16 frameBuffer(reinterpret_cast<uint16_t*>(0xD0000000), 240, 320);
-
-// Declaring any arrays used by enum/list items
+//
+// We've used enum menu items below, these require upfront choices be defined in an array of const char* as follows
+//
 const char* strStatusEnumEntries[] = { "Standby", "Starting", "Warm-up", "Running", "Protect" };
 
+// We added these menu items ourself instead of from designer, so it will not create
+// the ID and get helper method, but they are trivial so we introduce them here.
+constexpr int menuEngineId = 100;
+constexpr int freeRamId = 101;
+constexpr int minRamId = 102;
+static ActionMenuItem& getMenuEngine() { return getActionItemById(menuEngineId); }
+static AnalogMenuItem& getMenuFreeRam() { return getAnalogItemById(freeRamId); }
+static AnalogMenuItem& getMenuMinRam() { return getAnalogItemById(minRamId); }
+
+// This is the callback for the engine menu item
+static void onEngineSel(int menuId) {
+    serlogF(SER_DEBUG, "Engine selected");
+}
+
+//
+// Below is the menu build out. It generates all the items during setupMenu(). Once this call is made, the entire menu
+// is initialised and ready to use. You can read about menu builder:
+// https://www.thecoderscorner.com/products/arduino-libraries/tc-menu/menu-item-types/fluent-menu-builder-intro/
+//
 void buildMenu(TcMenuBuilder& builder) {
     builder.usingDynamicEEPROMStorage()
         .analogBuilder(MENU_LINE_VOLTS_ID, "Line Volts", DONT_SAVE, NoMenuFlags, 0, nullptr)
@@ -18,7 +47,37 @@ void buildMenu(TcMenuBuilder& builder) {
         .enumItem(MENU_STATUS_ID, "Status", DONT_SAVE, strStatusEnumEntries, 5, NoMenuFlags, 0, nullptr)
         .analogBuilder(MENU_COUNT_ID, "Count", DONT_SAVE, MenuFlags().readOnly(), 0, nullptr)
             .offset(0).divisor(1).step(1).maxValue(255).unit("tms").endItem()
-        .actionItem(MENU_ADD_ID, "Add", NoMenuFlags, tcAdded_onAddToCount);
+        .actionItem(MENU_ADD_ID, "Add", NoMenuFlags, tcAdded_onAddToCount)
+        .actionItem(menuEngineId, "Engine", NoMenuFlags, onEngineSel)
+        .analogBuilder(freeRamId, "Free Heap", DONT_SAVE, MenuFlags().readOnly(), 0, nullptr)
+            .offset(0).divisor(1000).step(1).maxValue(40000).unit("K").endItem()
+        .analogBuilder(minRamId, "Min Heap", DONT_SAVE, MenuFlags().readOnly(), 0, nullptr)
+            .offset(0).divisor(1000).step(1).maxValue(40000).unit("K").endItem()
+        .endSub();
+}
+
+constexpr color_t colorPaletteButton[] = { RGB(46, 58, 69), RGB(247, 249, 251), RGB(90, 160, 243), RGB(208, 232, 255) };
+static TitleWidget connectionWidget(iconsEthernetConnection, 2, 16, 12);
+
+static void extendTheme() {
+    TcThemeBuilder theme(renderer);
+    theme.addingTitleWidget(connectionWidget);
+
+    theme.menuItemOverride(getMenuEngine())
+        .onRowCol(3, 1, 2)
+        .withDrawingMode(GridPosition::DRAW_AS_ICON_ONLY)
+        .withPalette(colorPaletteButton)
+        .withImage4bpp(Coord(64,64), engineBitmap_palette0, engineBitmap0)
+        .apply();
+
+    theme.menuItemOverride(getMenuAdd())
+        .onRowCol(3, 2, 2)
+        .withDrawingMode(GridPosition::DRAW_AS_ICON_ONLY)
+        .withPalette(colorPaletteButton)
+        .withImage4bpp(Coord(64,64), plusIconBitmap_palette0, plusIconBitmap0)
+        .apply();
+
+    theme.apply();
 }
 
 bool pinState = false;
@@ -36,6 +95,7 @@ static void setup() {
     internalDigitalDevice().digitalWriteS(1, HIGH);
 
     setupMenu();
+    extendTheme();
 
     switches.initialise(internalDigitalIo(), false);
     switches.addSwitch(2, bumpTheCount);
@@ -49,7 +109,13 @@ static void setup() {
     taskManager.schedule(repeatMillis(100), [] {
         auto& voltsMenu = getMenuLineVolts();
         voltsMenu.setCurrentValue((voltsMenu.getCurrentValue() + 1)%voltsMenu.getMaximumValue());
+    });
+
+    taskManager.schedule(repeatSeconds(1), [] {
+        connectionWidget.setCurrentState(connectionWidget.getCurrentState() == 0 ? 1 : 0);
         getMenuStatus().setCurrentValue(rand()%5);
+        getMenuFreeRam().setFromFloatingPointValue(static_cast<float>(xPortGetFreeHeapSize()) / 1024.0F);
+        getMenuMinRam().setFromFloatingPointValue(static_cast<float>(xPortGetMinimumEverFreeHeapSize()) / 1024.0F);
     });
 
     setTitlePressedCallback([](int id) {

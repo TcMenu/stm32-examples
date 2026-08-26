@@ -3,8 +3,15 @@
 
 #include <graphics/TcThemeBuilder.h>
 
-color_t defaultItemPalette[] = { RGB(46, 58, 69), RGB(247, 249, 251), RGB(107, 122, 136), RGB(174, 230, 248) };
-color_t defaultTitlePalette[] = { RGB(46, 58, 69), RGB(74, 144, 226), RGB(107, 122, 136), RGB(174, 230, 248) };
+#include <UnicodeFontDefs.h>
+extern const UnicodeFont RobotoRegular16pt[];
+extern const UnicodeFont RobotoMedium24[];
+
+
+
+color_t defaultItemPalette[] = { RGB(46, 58, 69), RGB(247, 249, 251), RGB(90, 160, 243), RGB(208, 232, 255) };
+color_t defaultActionPalette[] = { RGB(46, 58, 69), RGB(74, 144, 226), RGB(208, 232, 255), RGB(107, 122, 136) };
+color_t defaultTitlePalette[] = { RGB(46, 58, 69), RGB(74, 144, 226), RGB(107, 122, 136), RGB(208, 232, 255) };
 
 /**
  * This is one of the stock themes, you can modify it to meet your requirements, and it will not be updated by tcMenu
@@ -17,24 +24,28 @@ void applyTheme(GraphicsDeviceRenderer& gr) {
     TcThemeBuilder themeBuilder(gr);
     themeBuilder.withSelectedColors(RGB(208, 232, 255), RGB(107, 122, 136))
             .dimensionsFromRenderer()
-            .withItemPadding(MenuPadding(2))
-            .withRenderingSettings(BaseGraphicalRenderer::TITLE_ALWAYS, false)
+            .withItemPadding(MenuPadding(4))
+            .withRenderingSettings(BaseGraphicalRenderer::TITLE_ALWAYS, true)
             .withPalette(defaultItemPalette)
             .withTcUnicodeFont(RobotoRegular16pt)
             .withSpacing(1)
-            .withStandardLowResCursorIcons()
+            //.withStandardLowResCursorIcons()
             .enableTcUnicode();
 
     themeBuilder.defaultTitleProperties()
             .withTcUnicodeFont(RobotoMedium24)
             .withPalette(defaultTitlePalette)
-            .withPadding(MenuPadding(4))
+            .withPadding(MenuPadding(8))
             .withJustification(tcgfx::GridPosition::JUSTIFY_CENTER_WITH_VALUE)
-            .withSpacing(2)
+            .withSpacing(3)
+            .withBorder(MenuBorder(6, BORD_FILL_ROUNDED))
             .apply();
 
     themeBuilder.defaultActionProperties()
             .withJustification(tcgfx::GridPosition::JUSTIFY_CENTER_WITH_VALUE)
+            .withPalette(defaultActionPalette)
+            .withBorder(MenuBorder(4, BORD_FILL_ROUNDED))
+            .withPadding(MenuPadding(10))
             .apply();
 
     themeBuilder.defaultItemProperties()
