@@ -29,13 +29,12 @@ void applyTheme(GraphicsDeviceRenderer& gr) {
             .withPalette(defaultItemPalette)
             .withTcUnicodeFont(RobotoRegular16pt)
             .withSpacing(1)
-            //.withStandardLowResCursorIcons()
             .enableTcUnicode();
 
     themeBuilder.defaultTitleProperties()
             .withTcUnicodeFont(RobotoMedium24)
             .withPalette(defaultTitlePalette)
-            .withPadding(MenuPadding(8))
+            .withPadding(MenuPadding(10))
             .withJustification(tcgfx::GridPosition::JUSTIFY_CENTER_WITH_VALUE)
             .withSpacing(3)
             .withBorder(MenuBorder(6, BORD_FILL_ROUNDED))
@@ -43,9 +42,9 @@ void applyTheme(GraphicsDeviceRenderer& gr) {
 
     themeBuilder.defaultActionProperties()
             .withJustification(tcgfx::GridPosition::JUSTIFY_CENTER_WITH_VALUE)
+            .withPadding(MenuPadding(8))
             .withPalette(defaultActionPalette)
             .withBorder(MenuBorder(4, BORD_FILL_ROUNDED))
-            .withPadding(MenuPadding(10))
             .apply();
 
     themeBuilder.defaultItemProperties()

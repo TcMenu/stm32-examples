@@ -87,11 +87,11 @@
   "codeOptions": {
     "embeddedPlatform": "PICO_SDK",
     "lastDisplayUuid": "3b4818cb-445e-4784-b712-8892590c2ea5",
-    "lastInputUuid": "89cd7f70-0457-4884-97c2-0db904ccb0ba",
+    "lastInputUuid": "62d822f4-3261-4c13-867d-573485380ca1",
     "lastRemoteUuids": [
       "2c101fec-1f7d-4ff3-8d2b-992ad41e7fcb"
     ],
-    "lastThemeUuid": "1947F585-9D36-448C-8A80-B425686107BD",
+    "lastThemeUuid": "adc2285a-cd2d-414a-b62e-26c7a48ae503",
     "applicationUUID": "5d8a2000-bbd4-4e77-8991-f4417456fec7",
     "applicationName": "Test LTDC",
     "lastProperties": [
@@ -152,7 +152,7 @@
       },
       {
         "name": "TITLE_SHOW_MODE",
-        "latestValue": "TITLE_FIRST_ROW",
+        "latestValue": "TITLE_ALWAYS",
         "subsystem": "THEME"
       },
       {
@@ -209,6 +209,91 @@
         "name": "DISPLAY_ROTATION",
         "latestValue": "0",
         "subsystem": "DISPLAY"
+      },
+      {
+        "name": "FONT_SEPARATOR_DISP",
+        "latestValue": "",
+        "subsystem": "THEME"
+      },
+      {
+        "name": "THEME_ITEM_FONT",
+        "latestValue": "tca:RobotoRegular16pt,0",
+        "subsystem": "THEME"
+      },
+      {
+        "name": "THEME_TITLE_FONT",
+        "latestValue": "tca:RobotoMedium24,0",
+        "subsystem": "THEME"
+      },
+      {
+        "name": "SPACING_SEPARATOR_DISP",
+        "latestValue": "",
+        "subsystem": "THEME"
+      },
+      {
+        "name": "TITLE_PADDING",
+        "latestValue": "10",
+        "subsystem": "THEME"
+      },
+      {
+        "name": "ITEM_PADDING",
+        "latestValue": "4",
+        "subsystem": "THEME"
+      },
+      {
+        "name": "TITLE_TO_ITEM_SPACING",
+        "latestValue": "3",
+        "subsystem": "THEME"
+      },
+      {
+        "name": "THEME_BUTTON_ALIGNMENT",
+        "latestValue": "JUSTIFY_CENTER_WITH_VALUE",
+        "subsystem": "THEME"
+      },
+      {
+        "name": "TOUCH_HEADER_BSP",
+        "latestValue": "stm32f429i_discovery_ts",
+        "subsystem": "INPUT"
+      },
+      {
+        "name": "TOUCH_SCREEN_WIDTH",
+        "latestValue": "240",
+        "subsystem": "INPUT"
+      },
+      {
+        "name": "TOUCH_SCREEN_HEIGHT",
+        "latestValue": "320",
+        "subsystem": "INPUT"
+      },
+      {
+        "name": "THEME_EXTRA_DRAWING_SEPARATOR_DISP",
+        "latestValue": "",
+        "subsystem": "THEME"
+      },
+      {
+        "name": "THEME_EDIT_ICONS",
+        "latestValue": "NONE",
+        "subsystem": "THEME"
+      },
+      {
+        "name": "THEME_ROUNDED_CORNERS",
+        "latestValue": "4",
+        "subsystem": "THEME"
+      },
+      {
+        "name": "THEME_USE_SLIDERS_ANALOG",
+        "latestValue": "true",
+        "subsystem": "THEME"
+      },
+      {
+        "name": "THEME_ACTION_ROUND_CORNER",
+        "latestValue": "4",
+        "subsystem": "THEME"
+      },
+      {
+        "name": "THEME_TITLE_ROUND_CORNER",
+        "latestValue": "6",
+        "subsystem": "THEME"
       }
     ],
     "namingRecursive": false,
