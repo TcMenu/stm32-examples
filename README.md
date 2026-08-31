@@ -8,6 +8,20 @@ We use CLion with STM32CubeMX and standard build tools, but any IDE compatible w
 
 At the top level of each project, you need to create a `tc-libs` folder and either clone or symlink the required libraries there.
 
+Here is what I use on macOS/Linux to link all the libraries in, a similar script could be used on powershell for windows:
+
+```
+mkdir tc-libs
+cd tc-libs
+export TCC_LIB_DIR=<your home dir>
+ln -s $TCC_LIB_DIR/TcMenuLog
+ln -s $TCC_LIB_DIR/TaskManagerIO
+ln -s $TCC_LIB_DIR/tcUnicodeHelper
+ln -s $TCC_LIB_DIR/IoAbstraction
+ln -s $TCC_LIB_DIR/tcMenu
+ln -s $TCC_LIB_DIR/Adafruit-GFX-mbed-fork
+```
+
 For example, if we are in an STM32Cube project called `ProjectA`, the structure would be:
 
 ```
