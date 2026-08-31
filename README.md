@@ -61,6 +61,17 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 
 Then add the following build property for cmake to know the platform `-DBUILD_FOR_STM32CUBE=true`.
 
+## Some other notes
+
+I tend to create another source folder in the project root called `CoreMenu` and put all my source in that folder, keep it separate from other sources. Whenever I tend to run through STMCubeMX I first commit everything that I have to git, so that I have a clean starting point in terms of differences. Then I can quickly restore any changes lost during the round trip. Unlike other IoAbstraction implementations, this one assumes that you've mapped the pins manually in CubeMX and then you map each configured GPIO to a pin
+
+```
+// map GPIO PF13 to pin 1 in IoAbstraction.
+appendIoaPin(StmGpioDesc(GPIOF, 13, 1));
+```
+
+The pin mappings are stored in an array starting at `0` up to `STM32_IOA_GPIO_ARR_SIZE` (default 16). The array mapping is an unchanged non-contended array in memory so is interrupt safe. It is assumed that all such mappings occur at startup only.
+
 ## Licenses
 
 The code written by the authors of tcMenu is under the Apache 2.0 license. This makes it safe to copy and use in your own designs. However, this repository also contains STM32Cube-provided code, which is subject to STM's own license terms (typically BSD-3-Clause). If a specific folder contains its own license file, those terms apply to the code within that folder.
