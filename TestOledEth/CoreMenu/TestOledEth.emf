@@ -1,0 +1,359 @@
+{
+  "version": "1.00",
+  "projectName": "STM32Cube example with OLED and Ethernet enabled on STM32F439-Nucleo.",
+  "author": "dave",
+  "items": [
+    {
+      "parentId": 0,
+      "type": "textItem",
+      "defaultValue": "",
+      "item": {
+        "textLength": 10,
+        "itemType": "GREGORIAN_DATE",
+        "name": "Date",
+        "variableName": "",
+        "id": 6,
+        "eepromAddress": -1,
+        "functionName": "",
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true,
+        "staticDataInRAM": false
+      }
+    },
+    {
+      "parentId": 0,
+      "type": "textItem",
+      "defaultValue": "",
+      "item": {
+        "textLength": 10,
+        "itemType": "TIME_24H",
+        "name": "Time now",
+        "variableName": "",
+        "id": 7,
+        "eepromAddress": -1,
+        "functionName": "",
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true,
+        "staticDataInRAM": false
+      }
+    },
+    {
+      "parentId": 0,
+      "type": "analogItem",
+      "defaultValue": "0",
+      "item": {
+        "maxValue": 255,
+        "offset": 0,
+        "divisor": 1,
+        "unitName": "tms",
+        "step": 0,
+        "name": "Count",
+        "variableName": "",
+        "id": 4,
+        "eepromAddress": -1,
+        "functionName": "",
+        "readOnly": true,
+        "localOnly": false,
+        "visible": true,
+        "staticDataInRAM": false
+      }
+    },
+    {
+      "parentId": 0,
+      "type": "actionMenu",
+      "item": {
+        "name": "Add",
+        "variableName": "",
+        "id": 5,
+        "eepromAddress": -1,
+        "functionName": "tcAdded_onAddToCount",
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true,
+        "staticDataInRAM": false
+      }
+    },
+    {
+      "parentId": 0,
+      "type": "subMenu",
+      "item": {
+        "secured": false,
+        "name": "Extras",
+        "variableName": "",
+        "id": 8,
+        "eepromAddress": -1,
+        "functionName": "",
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true,
+        "staticDataInRAM": false
+      }
+    },
+    {
+      "parentId": 8,
+      "type": "scrollItem",
+      "defaultValue": "0-Unknown",
+      "item": {
+        "itemWidth": 10,
+        "eepromOffset": 0,
+        "numEntries": 5,
+        "choiceMode": "ARRAY_IN_RAM",
+        "variable": "fixedArrayFoods",
+        "name": "Foods",
+        "variableName": "",
+        "id": 9,
+        "eepromAddress": -1,
+        "functionName": "",
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true,
+        "staticDataInRAM": false
+      }
+    },
+    {
+      "parentId": 8,
+      "type": "largeNumItem",
+      "defaultValue": "0",
+      "item": {
+        "digitsAllowed": 6,
+        "decimalPlaces": 3,
+        "negativeAllowed": true,
+        "name": "Large",
+        "variableName": "",
+        "id": 10,
+        "eepromAddress": 32,
+        "functionName": "onLargeChange",
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true,
+        "staticDataInRAM": false
+      }
+    },
+    {
+      "parentId": 8,
+      "type": "rgbItem",
+      "defaultValue": "#FFFFFFFF",
+      "item": {
+        "includeAlphaChannel": false,
+        "name": "RGB",
+        "variableName": "",
+        "id": 11,
+        "eepromAddress": -1,
+        "functionName": "",
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true,
+        "staticDataInRAM": false
+      }
+    },
+    {
+      "parentId": 8,
+      "type": "floatItem",
+      "defaultValue": "0.0",
+      "item": {
+        "numDecimalPlaces": 1,
+        "name": "Float",
+        "variableName": "",
+        "id": 12,
+        "eepromAddress": -1,
+        "functionName": "",
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true,
+        "staticDataInRAM": false
+      }
+    },
+    {
+      "parentId": 8,
+      "type": "runtimeList",
+      "item": {
+        "initialRows": 10,
+        "listCreationMode": "CUSTOM_RTCALL",
+        "name": "Count List",
+        "variableName": "",
+        "id": 13,
+        "eepromAddress": -1,
+        "functionName": "",
+        "readOnly": false,
+        "localOnly": false,
+        "visible": true,
+        "staticDataInRAM": false
+      }
+    }
+  ],
+  "codeOptions": {
+    "embeddedPlatform": "PICO_SDK",
+    "lastDisplayUuid": "61159C5B-F23A-4050-980F-A8FE114E2965",
+    "lastInputUuid": "6dd87e7d-e751-4912-a70d-91793b1d3d87",
+    "lastRemoteUuids": [
+      "2c101fec-1f7d-4ff3-8d2b-992ad41e7fcb"
+    ],
+    "lastThemeUuid": "396ED4DF-AD7B-4951-A848-A9E5838A549B",
+    "applicationUUID": "a41499b4-66b9-471c-a5d0-6556ef3a3f28",
+    "applicationName": "TestOledEth",
+    "lastProperties": [
+      {
+        "name": "SW_POLLING_MODE",
+        "latestValue": "SWITCHES_POLL_EVERYTHING",
+        "subsystem": "INPUT"
+      },
+      {
+        "name": "SWITCH_IODEVICE",
+        "latestValue": "devicePins",
+        "subsystem": "INPUT"
+      },
+      {
+        "name": "ENCODER_PIN_A",
+        "latestValue": "2",
+        "subsystem": "INPUT"
+      },
+      {
+        "name": "ENCODER_PIN_B",
+        "latestValue": "3",
+        "subsystem": "INPUT"
+      },
+      {
+        "name": "ENCODER_PIN_OK",
+        "latestValue": "8",
+        "subsystem": "INPUT"
+      },
+      {
+        "name": "ENCODER_BACK_PIN",
+        "latestValue": "-1",
+        "subsystem": "INPUT"
+      },
+      {
+        "name": "ENCODER_NEXT_PIN",
+        "latestValue": "-1",
+        "subsystem": "INPUT"
+      },
+      {
+        "name": "PULLUP_LOGIC",
+        "latestValue": "true",
+        "subsystem": "INPUT"
+      },
+      {
+        "name": "ENCODER_IS_QUARTER_CYCLE",
+        "latestValue": "false",
+        "subsystem": "INPUT"
+      },
+      {
+        "name": "BUS_TYPE",
+        "latestValue": "SPI",
+        "subsystem": "DISPLAY"
+      },
+      {
+        "name": "SERIAL_BUS",
+        "latestValue": "&hspi2",
+        "subsystem": "DISPLAY"
+      },
+      {
+        "name": "DISPLAY_VARIABLE",
+        "latestValue": "gfx",
+        "subsystem": "DISPLAY"
+      },
+      {
+        "name": "DISPLAY_TYPE",
+        "latestValue": "SSD_1306",
+        "subsystem": "DISPLAY"
+      },
+      {
+        "name": "DISPLAY_WIDTH",
+        "latestValue": "128",
+        "subsystem": "DISPLAY"
+      },
+      {
+        "name": "DISPLAY_HEIGHT",
+        "latestValue": "64",
+        "subsystem": "DISPLAY"
+      },
+      {
+        "name": "DISPLAY_I2C_ADDR",
+        "latestValue": "0xFF",
+        "subsystem": "DISPLAY"
+      },
+      {
+        "name": "DISPLAY_RESET_PIN",
+        "latestValue": "2",
+        "subsystem": "DISPLAY"
+      },
+      {
+        "name": "DISPLAY_CS_PIN",
+        "latestValue": "1",
+        "subsystem": "DISPLAY"
+      },
+      {
+        "name": "DISPLAY_RS_PIN",
+        "latestValue": "3",
+        "subsystem": "DISPLAY"
+      },
+      {
+        "name": "DISPLAY_SPI_FREQ",
+        "latestValue": "10000000",
+        "subsystem": "DISPLAY"
+      },
+      {
+        "name": "DISPLAY_ROTATION",
+        "latestValue": "0",
+        "subsystem": "DISPLAY"
+      },
+      {
+        "name": "UPDATES_PER_SEC",
+        "latestValue": "5",
+        "subsystem": "DISPLAY"
+      },
+      {
+        "name": "TEXT_ENCODING",
+        "latestValue": "ENCMODE_UTF8",
+        "subsystem": "DISPLAY"
+      },
+      {
+        "name": "ITEM_FONT",
+        "latestValue": "def:,1",
+        "subsystem": "THEME"
+      },
+      {
+        "name": "TITLE_FONT",
+        "latestValue": "def:,1",
+        "subsystem": "THEME"
+      },
+      {
+        "name": "TITLE_HEADER_PADDING",
+        "latestValue": "2",
+        "subsystem": "THEME"
+      },
+      {
+        "name": "TITLE_TO_ITEM_SPACING",
+        "latestValue": "2",
+        "subsystem": "THEME"
+      },
+      {
+        "name": "TITLE_SHOW_MODE",
+        "latestValue": "TITLE_FIRST_ROW",
+        "subsystem": "THEME"
+      },
+      {
+        "name": "USE_TC_UNICODE",
+        "latestValue": "false",
+        "subsystem": "THEME"
+      }
+    ],
+    "namingRecursive": false,
+    "useCppMain": true,
+    "saveLocation": "ONE_SINGLE_FILE_MENU_MAIN",
+    "useDynamicMenus": true,
+    "usingSizedEEPROMStorage": false,
+    "eepromSaveMode": "DYNAMIC_WRITE_BY_ID",
+    "eepromDefinition": "bsp:0",
+    "authenticatorDefinition": "",
+    "projectIoExpanders": [
+      "deviceIO:"
+    ],
+    "menuInMenuCollection": {
+      "menuDefinitions": []
+    }
+  },
+  "stringLists": []
+}
