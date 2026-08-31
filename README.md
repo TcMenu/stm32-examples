@@ -59,6 +59,8 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 )
 ```
 
+Then add the following build property for cmake to know the platform `-DBUILD_FOR_STM32CUBE=true`.
+
 ## Licenses
 
 The code written by the authors of tcMenu is under the Apache 2.0 license. This makes it safe to copy and use in your own designs. However, this repository also contains STM32Cube-provided code, which is subject to STM's own license terms (typically BSD-3-Clause). If a specific folder contains its own license file, those terms apply to the code within that folder.
