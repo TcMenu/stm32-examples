@@ -20,6 +20,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "lwip.h"
+
+#include "lan8742.h"
 #include "lwip/init.h"
 #include "lwip/netif.h"
 #if (defined ( __CC_ARM ) || defined (__ARMCC_VERSION))  /* MDK ARM Compiler */
@@ -27,6 +29,8 @@
 #endif /* MDK ARM Compiler */
 #include "ethernetif.h"
 #include <string.h>
+
+extern lan8742_Object_t LAN8742;
 
 /* USER CODE BEGIN 0 */
 
@@ -46,7 +50,7 @@ ip4_addr_t ipaddr;
 ip4_addr_t netmask;
 ip4_addr_t gw;
 /* USER CODE BEGIN OS_THREAD_ATTR_CMSIS_RTOS_V2 */
-#define INTERFACE_THREAD_STACK_SIZE ( 1024 )
+#define INTERFACE_THREAD_STACK_SIZE ( 2048 )
 osThreadAttr_t attributes;
 /* USER CODE END OS_THREAD_ATTR_CMSIS_RTOS_V2 */
 
@@ -76,6 +80,14 @@ void MX_LWIP_Init(void)
   /* We must always bring the network interface up connection or not... */
   netif_set_up(&gnetif);
 
+    while (LAN8742_GetLinkState(&LAN8742) != LAN8742_STATUS_100MBITS_FULLDUPLEX) {
+        HAL_Delay(100);
+    }
+
+    netif_set_link_up(&gnetif);
+    dhcp_start(&gnetif);
+
+
   /* Set the link callback function, this function is called on change of link status*/
   netif_set_link_callback(&gnetif, ethernet_link_status_updated);
 
@@ -88,10 +100,7 @@ void MX_LWIP_Init(void)
   osThreadNew(ethernet_link_thread, &gnetif, &attributes);
 /* USER CODE END H7_OS_THREAD_NEW_CMSIS_RTOS_V2 */
 
-  /* Start DHCP negotiation for a network interface (IPv4) */
-  dhcp_start(&gnetif);
-
-/* USER CODE BEGIN 3 */
+  /* Start DHCP negotiation for a network interface (IPv4) *//* USER CODE BEGIN 3 */
 
 /* USER CODE END 3 */
 }

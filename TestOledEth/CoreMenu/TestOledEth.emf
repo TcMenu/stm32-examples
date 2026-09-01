@@ -206,17 +206,17 @@
       },
       {
         "name": "ENCODER_PIN_A",
-        "latestValue": "2",
+        "latestValue": "8",
         "subsystem": "INPUT"
       },
       {
         "name": "ENCODER_PIN_B",
-        "latestValue": "3",
+        "latestValue": "10",
         "subsystem": "INPUT"
       },
       {
         "name": "ENCODER_PIN_OK",
-        "latestValue": "8",
+        "latestValue": "9",
         "subsystem": "INPUT"
       },
       {
@@ -246,7 +246,7 @@
       },
       {
         "name": "SERIAL_BUS",
-        "latestValue": "&hspi2",
+        "latestValue": "\u0026hspi3",
         "subsystem": "DISPLAY"
       },
       {
@@ -311,12 +311,12 @@
       },
       {
         "name": "ITEM_FONT",
-        "latestValue": "def:,1",
+        "latestValue": "tca:OpenSansRegular7pt,0",
         "subsystem": "THEME"
       },
       {
         "name": "TITLE_FONT",
-        "latestValue": "def:,1",
+        "latestValue": "tca:OpenSansRegular8pt,0",
         "subsystem": "THEME"
       },
       {
@@ -336,7 +336,7 @@
       },
       {
         "name": "USE_TC_UNICODE",
-        "latestValue": "false",
+        "latestValue": "true",
         "subsystem": "THEME"
       }
     ],

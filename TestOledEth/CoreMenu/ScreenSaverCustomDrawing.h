@@ -2,13 +2,14 @@
 #ifndef TCMENUEXAMPLE_SCREENSAVERCUSTOMDRAWING_H
 #define TCMENUEXAMPLE_SCREENSAVERCUSTOMDRAWING_H
 
-#include "generated/stm32OledEncoder_menu.h"
-#include <Fonts/OpenSansRegular8pt.h>
+#include "TestOledEth_menu.h"
+
 /**
  * Here we implement the custom drawing class so that we can register for drawing and reset events with it.
  * When the display times out the reset method is called, where in this case we take over the display. Then
  * when the take over of the display starts started() is called, followed by renderLoop() being called frequently
  * in a game loop until you give the display back.
+ * https://www.thecoderscorner.com/products/arduino-libraries/tc-menu/renderer-take-over-display/
  */
 class ScreenSaverCustomDrawing : public CustomDrawing {
 private:
@@ -57,16 +58,16 @@ public:
         gfx->clearDisplay();
 
         gfx->setCursor(offsetX, offsetY + 12);
-        gfx->print("Mbed demo");
+        gfx->print("Cube demo");
 
         gfx->setFont(OpenSansRegular8pt);
         gfx->setCursor(5 + offsetX, 20 + offsetY);
         char sz[32];
-        menuRTCDate.copyValue(sz, sizeof sz);
+        getMenuDate().copyValue(sz, sizeof sz);
         gfx->print(sz);
 
         gfx->setCursor(5 + offsetX, 32 + offsetY);
-        menuRTCTime.copyValue(sz, sizeof sz);
+        getMenuTimeNow().copyValue(sz, sizeof sz);
         gfx->print(sz);
 
         gfx->display();
@@ -81,4 +82,4 @@ public:
     }
 };
 
-#endif //TCMENUEXAMPLE_SCREENSAVERCUSTOMDRAWING_H
+#endif

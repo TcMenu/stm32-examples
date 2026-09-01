@@ -43,7 +43,7 @@
 #define ETHIF_TX_TIMEOUT (2000U)
 /* USER CODE BEGIN OS_THREAD_STACK_SIZE_WITH_RTOS */
 /* Stack size of the interface thread */
-#define INTERFACE_THREAD_STACK_SIZE ( 350 )
+#define INTERFACE_THREAD_STACK_SIZE ( 2048 )
 /* USER CODE END OS_THREAD_STACK_SIZE_WITH_RTOS */
 /* Network interface name */
 #define IFNAME0 's'
@@ -261,6 +261,7 @@ static void low_level_init(struct netif *netif)
 /* USER CODE END OS_THREAD_NEW_CMSIS_RTOS_V2 */
 
 /* USER CODE BEGIN PHY_PRE_CONFIG */
+  osDelay(500); /* Give PHY time to stabilize after power-up/RMII clock start */
 
 /* USER CODE END PHY_PRE_CONFIG */
   /* Set PHY IO functions */
@@ -282,7 +283,7 @@ static void low_level_init(struct netif *netif)
     if(PHYLinkState <= LAN8742_STATUS_LINK_DOWN)
     {
       netif_set_link_down(netif);
-      netif_set_down(netif);
+      //netif_set_down(netif);
     }
     else
     {
@@ -780,12 +781,14 @@ void ethernet_link_thread(void* argument)
 
   for(;;)
   {
+  linkchanged = 0U;
+  duplex = 0U;
   PHYLinkState = LAN8742_GetLinkState(&LAN8742);
 
   if(netif_is_link_up(netif) && (PHYLinkState <= LAN8742_STATUS_LINK_DOWN))
   {
     HAL_ETH_Stop_IT(&heth);
-    netif_set_down(netif);
+    //netif_set_down(netif); DO NOT SET NETIF DOWN HERE
     netif_set_link_down(netif);
   }
   else if(!netif_is_link_up(netif) && (PHYLinkState > LAN8742_STATUS_LINK_DOWN))

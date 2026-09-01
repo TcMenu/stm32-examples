@@ -4,6 +4,26 @@
 #include "TaskManagerIO.h"
 #include "stmCube/StmCubeDigital.h"
 #include "TestOledEth_menu.h"
+#include "NTPTimeEvent.h"
+#include <time.h>
+
+#include "lwip.h"
+#include "ScreenSaverCustomDrawing.h"
+
+extern RTC_HandleTypeDef hrtc;
+
+//
+// Here we declare a screen saver custom drawing class that we'll later attach to
+// the renderer to use whenever the system is idle. See ScreenSaverCustomDrawing.h
+// https://www.thecoderscorner.com/products/arduino-libraries/tc-menu/renderer-take-over-display/
+//
+static ScreenSaverCustomDrawing menuScreenSaver;
+
+// We've used a scroll choice item that is defined as fixed width in RAM. Here's the
+// actual values defined that we'll use. Notice they are not const, so can be changed
+// at runtime.
+// https://www.thecoderscorner.com/products/arduino-libraries/tc-menu/menu-item-types/scrollchoice-menu-item/
+//
 //                        0123456789 0123456789 0123456789 0123456789 0123456789
 static char fixedArrayFoods[] = "Pizza\0    Pasta\0    Salad\0    Curry\0    Soup\0     ";
 
@@ -25,18 +45,80 @@ void buildMenu(TcMenuBuilder& builder) {
             .endSub();
 }
 
+class ClockNtpTimeEvent : public NTPTimeEvent {
+public:
+
+    ClockNtpTimeEvent() : NTPTimeEvent("2.pool.ntp.org", 123) {}
+
+    void exec() override {
+        // Convert Unix timestamp to RTC date/time
+        time_t timestamp = _presentValue;
+        tm* timeinfo = gmtime(&timestamp);
+
+        RTC_TimeTypeDef sTime = {0};
+        RTC_DateTypeDef sDate = {0};
+
+        sTime.Hours = timeinfo->tm_hour;
+        sTime.Minutes = timeinfo->tm_min;
+        sTime.Seconds = timeinfo->tm_sec;
+        sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+        sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+
+        sDate.Year = timeinfo->tm_year - 100; // Years since 2000
+        sDate.Month = timeinfo->tm_mon + 1;
+        sDate.Date = timeinfo->tm_mday;
+        sDate.WeekDay = timeinfo->tm_wday == 0 ? RTC_WEEKDAY_SUNDAY : timeinfo->tm_wday;
+
+        HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
+        HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
+
+        taskManager.schedule(repeatSeconds(1), [] {
+            RTC_TimeTypeDef lTime = {0};
+            RTC_DateTypeDef lDate = {0};
+
+            HAL_RTC_GetDate(&hrtc, &lDate, RTC_FORMAT_BIN);
+            HAL_RTC_GetTime(&hrtc, &lTime, RTC_FORMAT_BIN);
+            const TimeStorage theTime(lTime.Hours, lTime.Minutes, lTime.Seconds);
+            const DateStorage theDate(lDate.Date, lDate.Month, lDate.Year);
+            auto& dateItem = getMenuDate();
+            auto& timeItem = getMenuTimeNow();
+            dateItem.setDate(theDate);
+            dateItem.setChanged(true);
+            timeItem.setTime(theTime);
+            timeItem.setChanged(true);
+        });
+
+        setCompleted(true);
+    }
+};
+
 
 static void setup() {
+    MX_LWIP_Init();
+
     // CS = 1/PF13, DC=3/PD15, RST=2/PF12
-    appendIoaPin(StmGpioDesc(GPIOF, 13, 1));
-    appendIoaPin(StmGpioDesc(GPIOF, 12, 2));
-    appendIoaPin(StmGpioDesc(GPIOD, 15, 3));
+    appendIoaPin(StmGpioDesc(GPIOF, GPIO_PIN_13, 1));
+    appendIoaPin(StmGpioDesc(GPIOF, GPIO_PIN_12, 2));
+    appendIoaPin(StmGpioDesc(GPIOD, GPIO_PIN_15, 3));
     // rotary encoder mappings A=8, B=10, OK=9
-    appendIoaPin(StmGpioDesc(GPIOC, 8, 8));
-    appendIoaPin(StmGpioDesc(GPIOC, 9, 9));
-    appendIoaPin(StmGpioDesc(GPIOC, 10, 10));
+    appendIoaPin(StmGpioDesc(GPIOC, GPIO_PIN_8, 8));
+    appendIoaPin(StmGpioDesc(GPIOC, GPIO_PIN_9, 9));
+    appendIoaPin(StmGpioDesc(GPIOC, GPIO_PIN_10, 10));
 
     setupMenu();
+
+    // Here we register a custom drawing handler that will draw the screen saver
+    // when the screen does a "reset". A screen reset takes place after any editing
+    // to put he display back into the normal main menu start state.
+    renderer.setCustomDrawingHandler(&menuScreenSaver);
+
+    // When the main title is pressed or touched, we can register a callback to be executed.
+    // Here we just present a simple dialog.
+    setTitlePressedCallback([](int id) {
+        showVersionDialog(&applicationInfo);
+    });
+
+    taskManager.registerEvent(new ClockNtpTimeEvent(), true);
 }
 
 void runMenuApp() {

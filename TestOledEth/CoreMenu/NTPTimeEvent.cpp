@@ -25,8 +25,8 @@ NTPTimeEvent::NTPTimeEvent(const char *serverName, int port)
             .cb_mem = nullptr,
             .cb_size = 0,
             .stack_mem = nullptr,
-            .stack_size = 1024,
-            .priority = osPriorityBelowNormal,
+            .stack_size = 4096,
+            .priority = osPriorityNormal,
             .tz_module = 0,
             .reserved = 0
     };
@@ -34,10 +34,10 @@ NTPTimeEvent::NTPTimeEvent(const char *serverName, int port)
 }
 
 void NTPTimeEvent::acquireNtpOnThread() {
-    int retriesLeft = 20;
+    int retriesLeft = 500;
     while(--retriesLeft > 0) {
         // wait before trying to avoid a tight loop.
-        osDelay((20 - retriesLeft) * 1000U);
+        osDelay( 10000U);
 
         serdebugF2("Starting ntp loop retries = ", retriesLeft);
 

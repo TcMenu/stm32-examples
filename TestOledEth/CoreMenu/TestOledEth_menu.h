@@ -140,6 +140,7 @@ protected:
 
 
 #include <tcMenuBuilder.h>
+#include <tcUnicodeHelper.h>
 #include "Adafruit_SSD1306.h"
 #include <ScrollChoiceMenuItem.h>
 #include <RemoteMenuItem.h>
@@ -153,6 +154,8 @@ extern const PROGMEM ConnectorLocalInfo applicationInfo;
 extern AdafruitSSD1306Spi* gfx;
 extern AdafruitDrawable gfxDrawable;
 extern GraphicsDeviceRenderer renderer;
+extern const UnicodeFont OpenSansRegular7pt[];
+extern const UnicodeFont OpenSansRegular8pt[];
 
 // Any externals needed by IO expanders, EEPROMs etc
 
@@ -174,7 +177,7 @@ void buildMenu(TcMenuBuilder& builder);
 
 // Inline helper methods to access menu items
 inline DateFormattedMenuItem& getMenuDate() { return getDateItemById(MENU_DATE_ID); }
-inline DateFormattedMenuItem& getMenuTimeNow() { return getDateItemById(MENU_TIME_NOW_ID); }
+inline TimeFormattedMenuItem& getMenuTimeNow() { return getTimeItemById(MENU_TIME_NOW_ID); }
 inline AnalogMenuItem& getMenuCount() { return getAnalogItemById(MENU_COUNT_ID); }
 inline ActionMenuItem& getMenuAdd() { return getActionItemById(MENU_ADD_ID); }
 inline SubMenuItem& getMenuExtras() { return getSubMenuById(MENU_EXTRAS_ID); }

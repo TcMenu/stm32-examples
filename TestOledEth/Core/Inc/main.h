@@ -36,7 +36,7 @@ extern "C" {
 uint32_t millis(void);
 uint32_t micros(void);
 void yield(void);
-extern SPI_HandleTypeDef hspi2;
+extern SPI_HandleTypeDef hspi3;
 
 /* USER CODE END Includes */
 
