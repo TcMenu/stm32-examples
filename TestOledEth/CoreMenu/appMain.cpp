@@ -126,6 +126,8 @@ void runMenuApp() {
 
     for (;;) {
         taskManager.runLoop();
+        // we are using FreeRTOS, give it chance to schedule reliably
+        taskManager.yieldForMicros(10);
     }
 }
 
@@ -174,7 +176,7 @@ uint32_t micros(void) {
 // TaskManagerIO needs a way of reliably yielding in spin loops, up to you you could maybe leave empty.
 //
 void yield(void) {
-    osDelay(0);
+    osDelay(1);
 }
 
 //

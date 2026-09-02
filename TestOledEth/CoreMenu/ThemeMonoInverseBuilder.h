@@ -43,7 +43,8 @@ void installMonoInverseTitleTheme(GraphicsDeviceRenderer& gr, const MenuFontDef&
             .withPalette(defaultTitlePaletteMono)
             .withPadding(MenuPadding(TITLE_PADDING))
             .withJustification(tcgfx::GridPosition::JUSTIFY_TITLE_LEFT_WITH_VALUE)
-            .withSpacing(TITLE_SPACING)
+            .withBorder(MenuBorder(2, BORD_FILL_ROUNDED))
+            .withSpacing(1)
             .apply();
 
     themeBuilder.defaultActionProperties()

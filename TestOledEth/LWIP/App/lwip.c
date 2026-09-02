@@ -77,16 +77,10 @@ void MX_LWIP_Init(void)
   /* Registers the default network interface */
   netif_set_default(&gnetif);
 
-  /* We must always bring the network interface up connection or not... */
+  /* Modified STMCube code: Removed blocking while loop, premature netif_set_link_up,
+   * and dhcp_start. Interface is administratively brought UP, while physical link state
+   * and DHCP are managed dynamically in ethernet_link_thread. */
   netif_set_up(&gnetif);
-
-    while (LAN8742_GetLinkState(&LAN8742) != LAN8742_STATUS_100MBITS_FULLDUPLEX) {
-        HAL_Delay(100);
-    }
-
-    netif_set_link_up(&gnetif);
-    dhcp_start(&gnetif);
-
 
   /* Set the link callback function, this function is called on change of link status*/
   netif_set_link_callback(&gnetif, ethernet_link_status_updated);
@@ -96,7 +90,8 @@ void MX_LWIP_Init(void)
   memset(&attributes, 0x0, sizeof(osThreadAttr_t));
   attributes.name = "EthLink";
   attributes.stack_size = INTERFACE_THREAD_STACK_SIZE;
-  attributes.priority = osPriorityBelowNormal;
+  /* Modified STMCube code: Set priority to osPriorityNormal so it is not starved by defaultTask */
+  attributes.priority = osPriorityNormal;
   osThreadNew(ethernet_link_thread, &gnetif, &attributes);
 /* USER CODE END H7_OS_THREAD_NEW_CMSIS_RTOS_V2 */
 

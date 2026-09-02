@@ -33,7 +33,7 @@
 
 /* Within 'USER CODE' section, code will be kept by default at each generation */
 /* USER CODE BEGIN 0 */
-
+#include "lwip/dhcp.h"
 /* USER CODE END 0 */
 
 /* Private define ------------------------------------------------------------*/
@@ -186,9 +186,6 @@ static void low_level_init(struct netif *netif)
 /* USER CODE BEGIN OS_THREAD_ATTR_CMSIS_RTOS_V2 */
   osThreadAttr_t attributes;
 /* USER CODE END OS_THREAD_ATTR_CMSIS_RTOS_V2 */
-  uint32_t duplex, speed = 0;
-  int32_t PHYLinkState = 0;
-  ETH_MACConfigTypeDef MACConf = {0};
   /* Start ETH HAL Init */
 
    uint8_t MACAddr[6] ;
@@ -277,54 +274,8 @@ static void low_level_init(struct netif *netif)
 
   if (hal_eth_init_status == HAL_OK)
   {
-    PHYLinkState = LAN8742_GetLinkState(&LAN8742);
-
-    /* Get link state */
-    if(PHYLinkState <= LAN8742_STATUS_LINK_DOWN)
-    {
-      netif_set_link_down(netif);
-      //netif_set_down(netif);
-    }
-    else
-    {
-      switch (PHYLinkState)
-      {
-      case LAN8742_STATUS_100MBITS_FULLDUPLEX:
-        duplex = ETH_FULLDUPLEX_MODE;
-        speed = ETH_SPEED_100M;
-        break;
-      case LAN8742_STATUS_100MBITS_HALFDUPLEX:
-        duplex = ETH_HALFDUPLEX_MODE;
-        speed = ETH_SPEED_100M;
-        break;
-      case LAN8742_STATUS_10MBITS_FULLDUPLEX:
-        duplex = ETH_FULLDUPLEX_MODE;
-        speed = ETH_SPEED_10M;
-        break;
-      case LAN8742_STATUS_10MBITS_HALFDUPLEX:
-        duplex = ETH_HALFDUPLEX_MODE;
-        speed = ETH_SPEED_10M;
-        break;
-      default:
-        duplex = ETH_FULLDUPLEX_MODE;
-        speed = ETH_SPEED_100M;
-        break;
-      }
-
-    /* Get MAC Config MAC */
-    HAL_ETH_GetMACConfig(&heth, &MACConf);
-    MACConf.DuplexMode = duplex;
-    MACConf.Speed = speed;
-    HAL_ETH_SetMACConfig(&heth, &MACConf);
-
-    HAL_ETH_Start_IT(&heth);
-    netif_set_up(netif);
-    netif_set_link_up(netif);
-/* USER CODE BEGIN PHY_POST_CONFIG */
-
-/* USER CODE END PHY_POST_CONFIG */
-    }
-
+    /* Modified STMCube code: Initialize link down; ethernet_link_thread dynamically configures MAC and manages link/DHCP */
+    netif_set_link_down(netif);
   }
   else
   {
@@ -781,62 +732,67 @@ void ethernet_link_thread(void* argument)
 
   for(;;)
   {
-  linkchanged = 0U;
-  duplex = 0U;
-  PHYLinkState = LAN8742_GetLinkState(&LAN8742);
+    linkchanged = 0U;
+    duplex = 0U;
+    PHYLinkState = LAN8742_GetLinkState(&LAN8742);
 
-  if(netif_is_link_up(netif) && (PHYLinkState <= LAN8742_STATUS_LINK_DOWN))
-  {
-    HAL_ETH_Stop_IT(&heth);
-    //netif_set_down(netif); DO NOT SET NETIF DOWN HERE
-    netif_set_link_down(netif);
-  }
-  else if(!netif_is_link_up(netif) && (PHYLinkState > LAN8742_STATUS_LINK_DOWN))
-  {
-    switch (PHYLinkState)
+    /* Modified STMCube code: Handle auto-negotiation in progress, link down, and dynamic DHCP start/stop */
+    if (PHYLinkState <= LAN8742_STATUS_LINK_DOWN || PHYLinkState == LAN8742_STATUS_AUTONEGO_NOTDONE)
     {
-    case LAN8742_STATUS_100MBITS_FULLDUPLEX:
-      duplex = ETH_FULLDUPLEX_MODE;
-      speed = ETH_SPEED_100M;
-      linkchanged = 1;
-      break;
-    case LAN8742_STATUS_100MBITS_HALFDUPLEX:
-      duplex = ETH_HALFDUPLEX_MODE;
-      speed = ETH_SPEED_100M;
-      linkchanged = 1;
-      break;
-    case LAN8742_STATUS_10MBITS_FULLDUPLEX:
-      duplex = ETH_FULLDUPLEX_MODE;
-      speed = ETH_SPEED_10M;
-      linkchanged = 1;
-      break;
-    case LAN8742_STATUS_10MBITS_HALFDUPLEX:
-      duplex = ETH_HALFDUPLEX_MODE;
-      speed = ETH_SPEED_10M;
-      linkchanged = 1;
-      break;
-    default:
-      break;
+      if (netif_is_link_up(netif))
+      {
+        HAL_ETH_Stop_IT(&heth);
+        netif_set_link_down(netif);
+        dhcp_stop(netif);
+      }
     }
+    else if (!netif_is_link_up(netif) && (PHYLinkState > LAN8742_STATUS_LINK_DOWN))
+    {
+      switch (PHYLinkState)
+      {
+      case LAN8742_STATUS_100MBITS_FULLDUPLEX:
+        duplex = ETH_FULLDUPLEX_MODE;
+        speed = ETH_SPEED_100M;
+        linkchanged = 1;
+        break;
+      case LAN8742_STATUS_100MBITS_HALFDUPLEX:
+        duplex = ETH_HALFDUPLEX_MODE;
+        speed = ETH_SPEED_100M;
+        linkchanged = 1;
+        break;
+      case LAN8742_STATUS_10MBITS_FULLDUPLEX:
+        duplex = ETH_FULLDUPLEX_MODE;
+        speed = ETH_SPEED_10M;
+        linkchanged = 1;
+        break;
+      case LAN8742_STATUS_10MBITS_HALFDUPLEX:
+        duplex = ETH_HALFDUPLEX_MODE;
+        speed = ETH_SPEED_10M;
+        linkchanged = 1;
+        break;
+      default:
+        break;
+      }
 
-    if(linkchanged)
-    {
-      /* Get MAC Config MAC */
-      HAL_ETH_GetMACConfig(&heth, &MACConf);
-      MACConf.DuplexMode = duplex;
-      MACConf.Speed = speed;
-      HAL_ETH_SetMACConfig(&heth, &MACConf);
-      HAL_ETH_Start_IT(&heth);
-      netif_set_up(netif);
-      netif_set_link_up(netif);
+      if (linkchanged)
+      {
+        /* Get MAC Config MAC */
+        HAL_ETH_GetMACConfig(&heth, &MACConf);
+        MACConf.DuplexMode = duplex;
+        MACConf.Speed = speed;
+        HAL_ETH_SetMACConfig(&heth, &MACConf);
+        HAL_ETH_Start_IT(&heth);
+        netif_set_up(netif);
+        netif_set_link_up(netif);
+        dhcp_start(netif);
+      }
     }
-  }
 
 /* USER CODE BEGIN ETH link Thread core code for User BSP */
 
 /* USER CODE END ETH link Thread core code for User BSP */
 
-    osDelay(100);
+    osDelay(200);
   }
 }
 
