@@ -61,7 +61,7 @@ public:
         gfx->print("Cube demo");
 
         gfx->setFont(OpenSansRegular8pt);
-        gfx->setCursor(5 + offsetX, 20 + offsetY);
+        gfx->setCursor(5 + offsetX, 24 + offsetY);
         char sz[32];
         getMenuDate().copyValue(sz, sizeof sz);
         gfx->print(sz);
