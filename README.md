@@ -1,6 +1,6 @@
 # STM32Cube embedded menu UI demos using tcMenu framework
 
-In this repository we host a few STM32Cube starter/example projects for tcMenu. They target the STM32F4 range of devices, and if you're on the same development board as the example it should work out of the box. Otherwise, I've tried to document how to start out in STMCubeMX.
+In this repository we host a few STM32Cube starter/example projects for [tcMenu framework](https://www.thecoderscorner.com/products/arduino-libraries/tc-menu/). They target the STM32F4 range of devices, and if you're on the same development board as the example it should work out of the box. Otherwise, I've tried to document how to start out in STMCubeMX.
 
 
 ## Example 1: STM32F429 DISC1
