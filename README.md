@@ -11,6 +11,17 @@ This project is called `TestLTDC`. It uses our frame-buffer support classes from
 
 This project is called `TestOledEth` and provides support for an OLED screen with rotary encoder, again using our Adafruit fork project. The display uses SPI and performance is excellent. FreeRTOS in enabled. Logging is configured to the ST-Link adapter.
 
+## What is tcMenu?
+
+TcMenu is a framework with a [web based embedded menu designer](https://designer.thecoderscorner.com/) to build your initial UI/menu structure. Generally speaking the output code will run right away on any working STMCube setup following this page. It rapidly generates a moderately capable UI with exceptionally low footprint.
+
+* Structured menus (settings, calibration, control panels).
+* Fast onboarding with web based menu designer.
+* No allocation outside of setup, heap is exceptionally stable.
+* OLED, LTDC, SPI-TFT, LCD devices needing a simple grid based UI.
+* TaskManagerIO allows for simple scheduling and is RTOS safe.
+* Products where predictability matters more than animation.
+
 ## Required software
 
 You'll need STM32CubeMX UI, ARM build tools, and an IDE. We use CLion with STM32CubeMX and the cube provided build tools, but any IDE compatible with STM32Cube should work just fine. Resources:
