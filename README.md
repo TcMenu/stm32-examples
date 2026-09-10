@@ -126,6 +126,10 @@ appendIoaPin(StmGpioDesc(GPIOF, GPIO_PIN_12, 1));
 
 The pin mappings are stored in an array starting at `0` up to `STM32_IOA_GPIO_ARR_SIZE` (default 16). The array mapping is an unchanged non-contended array in memory so is interrupt safe. It is assumed that all such mappings occur at startup only. If you need more than 16 mappings, define the above variable as a build flag.
 
+### IoAbstraction - Features left to implement
+
+The analog IO device has not been ported, but unless you're using Analog Joystick or a DfRobot keypad analog input it should not affect your usage. The SPI wrapper has been tested quite heavily but the I2C Wrapper less so.
+
 ## Licenses
 
 The code written by the authors of tcMenu is under the Apache 2.0 license. This makes it safe to copy and use in your own designs. However, this repository also contains STM32Cube-provided code, which is subject to STM's own license terms (typically BSD-3-Clause). If a specific folder contains its own license file, those terms apply to the code within that folder.
