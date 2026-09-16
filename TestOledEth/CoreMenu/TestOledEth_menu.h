@@ -140,8 +140,8 @@ protected:
 
 
 #include <tcMenuBuilder.h>
-#include <tcUnicodeHelper.h>
 #include "Adafruit_SSD1306.h"
+#include <tcUnicodeHelper.h>
 #include <ScrollChoiceMenuItem.h>
 #include <RemoteMenuItem.h>
 #include <EditableLargeNumberMenuItem.h>

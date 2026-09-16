@@ -8,7 +8,7 @@
     use elsewhere.
  */
 
-// Generated for PicoSDK/STMCube CMake by TcMenu 5.0.0-SNAPSHOT on 2026-08-31T10:39:12.425740Z.
+// Generated for PicoSDK/STMCube CMake by TcMenu 5.0.0-SNAPSHOT on 2026-09-03T09:16:32.056202Z.
 
 #include <tcMenu.h>
 #include "TestOledEth_menu.h"
@@ -188,9 +188,9 @@ void drawCookieCutBitmap(Adafruit_GFX* gfx, int16_t x, int16_t y, const uint8_t 
     gfx->endWrite();
 }
 
-#include "ThemeMonoInverseBuilder.h"
 #include <Fonts/OpenSansRegular7pt.h>
 #include <Fonts/OpenSansRegular8pt.h>
+#include "ThemeMonoInverseBuilder.h"
 
 // Global variable declarations
 const  ConnectorLocalInfo applicationInfo = { "TestOledEth", "a41499b4-66b9-471c-a5d0-6556ef3a3f28" };
@@ -217,6 +217,6 @@ void setupMenu() {
         renderer.setDrawable(&gfxDrawable);
         switches.init(internalDigitalIo(), SWITCHES_POLL_EVERYTHING, true);
         menuMgr.initForEncoder(&renderer, &getMenuDate(), 8, 10, 9);
-        installMonoInverseTitleTheme(renderer, MenuFontDef(&OpenSansRegular7pt, 0), MenuFontDef(&OpenSansRegular8pt, 0), true, BaseGraphicalRenderer::TITLE_FIRST_ROW, true);
+        applyTheme(renderer);
 }
 

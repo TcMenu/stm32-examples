@@ -56,12 +56,12 @@ public:
         }
 
         gfx->clearDisplay();
-
+        gfx->setTextColor(WHITE);
         gfx->setCursor(offsetX, offsetY + 12);
         gfx->print("Cube demo");
 
         gfx->setFont(OpenSansRegular8pt);
-        gfx->setCursor(5 + offsetX, 24 + offsetY);
+        gfx->setCursor(5 + offsetX, 22 + offsetY);
         char sz[32];
         getMenuDate().copyValue(sz, sizeof sz);
         gfx->print(sz);
