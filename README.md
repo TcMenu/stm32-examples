@@ -5,6 +5,8 @@ In this repository we host a few STM32Cube starter/example projects for [tcMenu 
 
 ## Example 1: STM32F429 DISC1
 
+<img width="375" height="500" alt="ice-white-ltdc" src="https://github.com/user-attachments/assets/990f76f2-74a5-4d72-a0dd-59a787ccce47" />
+
 This project is called `TestLTDC`. It uses our frame-buffer support classes from the Adafruit fork project that we maintain. It has excellent display performance and touch support. It is one of our showcase examples. FreeRTOS is enabled. Logging is configured to the ST-Link adapter.
 
 ## Example 2: STM32F439 Nucleo144
